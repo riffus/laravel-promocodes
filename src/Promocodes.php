@@ -172,7 +172,7 @@ class Promocodes
                     throw new AlreadyUsedException;
                 }
 
-                $promocode->users()->attach(auth()->id(), [
+                $promocode->users()->attach(auth()->user()->id, [
                     'promocode_id' => $promocode->id,
                     'used_at' => Carbon::now(),
                 ]);
@@ -333,6 +333,6 @@ class Promocodes
     public function isSecondUsageAttempt(Promocode $promocode)
     {
         return $promocode->users()->wherePivot(config('promocodes.related_pivot_key', 'user_id'),
-            auth()->id())->exists();
+            auth()->user()->id)->exists();
     }
 }
